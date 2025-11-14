@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>绘本阅读打卡 · 卡通竞赛版</title>
+  <style>
+    :root {
+      /* 宝可梦主题色系（默认） */
+      --bg: #f5fbff;             /* 背景辅助：杰尼龟蓝的浅色系 */
+      --panel: #ffffff;           /* 面板底色 */
+      --text: #1b2631;            /* 文本深色 */
+      --primary: #FCC700;         /* 主按钮：皮卡丘黄 */
+      --accent: #30A7D7;          /* 背景辅助/强调：杰尼龟蓝 */
+      --danger: #FF0000;          /* 警示信息：精灵球红 */
+      --soft: #eaf6ff;            /* 柔和背景（蓝的更浅） */
+    }
+    /* 主题：独角兽、恐龙、太空熊、皮卡丘 */
+    .theme-unicorn { --bg:#fff6f0; --panel:#ffffff; --text:#2c3e50; --acc:#ff8fab; --acc2:#80c8ff; --ok:#6bd77b; --soft:#f8edf2; }
+    .theme-dinosaur { --bg:#f3fff0; --panel:#ffffff; --text:#2c3e50; --acc:#6bd77b; --acc2:#a0e99c; --ok:#4caf50; --soft:#e9ffe4; }
+    .theme-spacebear { --bg:#f0f6ff; --panel:#ffffff; --text:#20314a; --acc:#80c8ff; --acc2:#b0a8ff; --ok:#5dd1ff; --soft:#ebf3ff; }
+    .theme-pikachu { --bg:#fffbea; --panel:#ffffff; --text:#2c2c2c; --acc:#ffd54f; --acc2:#ffec8b; --ok:#ffb300; --soft:#fff4cc; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, system-ui, Segoe UI, Roboto, PingFang SC, Noto Sans SC, Helvetica, Arial;
+      background: radial-gradient(1200px 600px at 80% -10%, #ffe0eb, transparent), var(--bg);
+      color: var(--text);
+    }
+    header {
+      display:flex;justify-content:space-between;align-items:center;padding:12px 16px;
+      background: linear-gradient(180deg, var(--soft), var(--panel));
+      border-bottom: 2px solid var(--accent);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .brand {display:flex;align-items:center;gap:10px;font-weight:bold;color:var(--accent)}
+    .brand .mascot {font-size:28px}
+    main {display:grid;grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px;}
+    .card { background: var(--panel); border: 2px solid var(--accent); border-radius: 16px; padding: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.05); }
+    h3 { margin: 6px 0 8px; color: var(--accent); }
+    .row { display:flex; gap:8px; align-items:center; }
+    .col { display:flex; flex-direction:column; gap:8px; }
+    .input { padding:12px 16px; border:3px solid var(--accent); border-radius:16px; background:#fff; font-size:14px; font-weight:500; transition: all 0.2s ease; min-height:48px; }
+    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(252, 199, 0, 0.2); outline: none; transform: translateY(-1px); }
+    .input:hover { border-color: var(--primary); }
+    .ghost { padding:12px 16px; border:3px solid var(--accent); border-radius:16px; background:#fff; cursor:pointer; color:#1b2631; font-weight:600; font-size:14px; min-height:56px; display:inline-flex; align-items:center; gap:8px; transition: all 0.2s ease; }
+    .ghost:hover { background:#f2fafe; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .ghost:active { background:#e6f4fb; transform: translateY(0); }
+    .ghost:disabled { opacity:.6; cursor:not-allowed; transform: none; box-shadow: none; }
+    .ok { padding:12px 16px; border:0; border-radius:16px; background:var(--primary); color:#1b2631; font-weight:bold; cursor:pointer; box-shadow: 0 4px 0 #d6ac00; font-size:14px; min-height:56px; display:inline-flex; align-items:center; gap:8px; transition: all 0.2s ease; }
+    .ok:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 6px 0 #d6ac00, 0 8px 16px rgba(252, 199, 0, 0.3); }
+    .ok:active { filter: brightness(0.92); transform: translateY(0); box-shadow: 0 2px 0 #d6ac00; }
+    .ok:disabled { opacity:.7; cursor:not-allowed; transform: none; box-shadow: none; }
+    .tiny { font-size:12px; color:#7f8c8d }
+    .kid-pill { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; background:#e6f6fd; border:3px solid var(--accent); font-weight:600; font-size:13px; transition: all 0.2s ease; }
+    .kid-pill:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .progress-wrap { display:flex; gap:12px; align-items:center; }
+    .bar { flex:1; height:20px; background:#eaf6ff; border-radius:12px; overflow:hidden; border:3px solid var(--accent); box-shadow: inset 0 2px 4px rgba(0,0,0,.1); }
+    .bar > div { height:100%; background:linear-gradient(90deg,#30A7D7,#7dd3fc); transition: width 0.3s ease; }
+    .bar2 > div { background:linear-gradient(90deg,#30A7D7,#9bdcf8); }
+    .badge { display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:#f8fdff; border:2px solid var(--accent); margin:4px; font-weight:600; font-size:13px; transition: all 0.2s ease; cursor: default; }
+    .badge:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .badge .icon { font-size:20px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.1)); }
+    .badge.pop { animation: popIn .5s ease-out; }
+    .badge.pop .icon { animation: bounce .6s ease-out .1s; }
+    @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-8px); } 60% { transform: translateY(-4px); } }
+    .notif { position:fixed; top:16px; right:16px; max-width:320px; z-index:1000 }
+    .notif-item { background:#fff; border:2px solid var(--accent); border-radius:14px; padding:10px; margin-bottom:10px; box-shadow:0 8px 20px rgba(0,0,0,.08) }
+    .notif-item.warn { border-color: var(--danger); background:#ffe6e6; color:#7a0000 }
+    .ghost.danger { border-color: var(--danger); color:#7a0000 }
+    .ghost.danger:hover { background:#ffecec }
+    .list { max-height:240px; overflow:auto; border:1px dashed var(--accent); border-radius:12px; padding:8px; background:#f7fcff }
+    .pill { padding:4px 8px; border-radius:999px; background:#eaf6ff; border:1px solid #cde9ff; font-size:12px }
+    .sep { height:8px }
+
+    /* 勋章弹跳与彩带效果 */
+    .badge.pop { animation: popIn .5s ease-out; }
+    @keyframes popIn { 0%{ transform:scale(.6); opacity:0 } 60%{ transform:scale(1.1); opacity:1 } 100%{ transform:scale(1)} }
+    .confetti { position:fixed; inset:0; pointer-events:none; z-index:1500 }
+    .confetti-piece { position:absolute; width:10px; height:16px; opacity:.9; border-radius:3px; animation: fall 1.8s ease-in forwards; }
+    @keyframes fall { 0%{ transform: translateY(-20px) rotate(0deg) } 100%{ transform: translateY(100vh) rotate(360deg); opacity:0 } }
+    /* 编辑弹窗 */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:1200; display:flex; align-items:center; justify-content:center }
+    .modal { background: var(--panel); border:2px solid var(--accent); border-radius:12px; padding:12px; max-width:520px; width:92vw; box-shadow:0 8px 24px rgba(0,0,0,.15) }
+    .modal h4 { margin: 0 0 8px; color: var(--accent) }
+    .modal .row { margin:6px 0 }
+    .modal .buttons { display:flex; gap:8px; justify-content:flex-end; margin-top:8px }
+    
+    /* 角色卡片与经验值条样式 */
+    .character-card { transition: transform 0.2s ease, box-shadow 0.2s ease; animation: fadeInUp 0.6s ease-out; }
+    .character-card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,.15) !important; }
+    .avatar { transition: transform 0.2s ease; animation: bounceIn 0.8s ease-out; }
+    .character-card:hover .avatar { transform: scale(1.05); }
+    .exp-bar { position: relative; }
+    .exp-bar::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,.3) 50%, transparent 70%); border-radius: 8px; animation: shimmer 2s infinite; }
+    @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+    
+    /* 高对比度模式支持 */
+    @media (prefers-contrast: high) {
+      .character-card { border-width: 4px !important; }
+      .avatar { box-shadow: 0 0 0 3px currentColor !important; }
+      .exp-bar { border-width: 3px !important; }
+    }
+    
+    /* 大按钮悬停效果 */
+    .ok[style*="width:64px"]:hover { animation: pulse 0.6s ease-in-out; }
+    .ghost[style*="width:64px"]:hover { animation: pulse 0.6s ease-in-out; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+  <div id="notif" class="notif"></div>
+  <header>
+    <div class="brand"><span class="mascot">🦄</span><div>绘本阅读打卡 · 卡通竞赛版</div></div>
+    <div class="row">
+      <select id="themeSelect" class="input">
+        <option value="unicorn">独角兽 🦄</option>
+        <option value="dinosaur">恐龙 🦖</option>
+        <option value="spacebear">太空熊 🧸</option>
+        <option value="pikachu">皮卡丘 ⚡</option>
+      </select>
+      <button class="ghost" id="exportData">导出数据</button>
+      <label class="ghost">导入数据<input id="importData" type="file" accept=".json" style="display:none"></label>
+    </div>
+  </header>
+
+  <main>
+    <!-- 左侧：录入与设置 -->
+    <section class="card">
+      <h3>每日录入</h3>
+      <!-- 极速打卡 -->
+      <div class="row" style="gap:12px;flex-wrap:wrap">
+        <div class="col" style="gap:6px">
+          <div class="row" style="gap:6px">
+            <button class="ok" id="quickKid1Add" style="width:64px;height:64px;border-radius:50%;font-size:20px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">🐼<br>+1</button>
+            <span id="quickKid1Count" class="pill" style="font-size:14px;font-weight:600">今日：0 本</span>
+            <button class="ghost" id="quickKid1Sub" style="width:56px;height:56px;border-radius:50%;font-size:16px;font-weight:bold">—1</button>
+            <button class="ok" id="quickKid1Save" style="width:64px;height:64px;border-radius:50%;font-size:16px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">✅<br>保存</button>
+          </div>
+          <div class="row" style="gap:6px">
+            <button class="ok" id="quickKid2Add" style="width:64px;height:64px;border-radius:50%;font-size:20px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">🦊<br>+1</button>
+            <span id="quickKid2Count" class="pill" style="font-size:14px;font-weight:600">今日：0 本</span>
+            <button class="ghost" id="quickKid2Sub" style="width:56px;height:56px;border-radius:50%;font-size:16px;font-weight:bold">—1</button>
+            <button class="ok" id="quickKid2Save" style="width:64px;height:64px;border-radius:50%;font-size:16px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">✅<br>保存</button>
+          </div>
+        </div>
+        <button class="ghost" id="toggleDetailMode" style="align-self:flex-start;min-height:64px;padding:16px;font-weight:600">📋<br>详细模式</button>
+      </div>
+      <div class="sep"></div>
+      <!-- 日期与选择 -->
+      <div class="row">
+        <select id="kidSelect" class="input">
+          <option value="kid1">小宝 🐼</option>
+          <option value="kid2">大宝 🦊</option>
+        </select>
+        <input id="dateInput" type="date" class="input" />
+      </div>
+      <div id="booksContainer" class="col" style="margin-top:8px;display:none"></div>
+      <div class="row" style="margin-top:6px;display:none" id="detailControls">
+        <button class="ghost" id="addBookRow">添加一本绘本</button>
+        <button class="ghost" id="clearRows">清空列表</button>
+        <button class="ok" id="saveEntries">保存今天记录</button>
+      </div>
+      <div class="tiny" id="detailHint" style="display:none">提示：每一行填写绘本名称与当日阅读次数，点击保存。</div>
+      <div class="sep"></div>
+      <h3>每日目标与小任务</h3>
+      <div class="row">
+        <label class="hint">至少 <input id="goalBooks" type="number" min="1" max="20" value="3" class="input" style="width:80px"> 本</label>
+        <label class="hint">每本不少于 <input id="goalTimes" type="number" min="1" max="20" value="2" class="input" style="width:80px"> 次</label>
+        <button class="ghost" id="saveGoals">保存目标</button>
+      </div>
+      <div class="tiny" id="goalProgressHint">今日进度：尚未记录</div>
+      <div class="sep"></div>
+      <h3>孩子设置</h3>
+      <div class="row">
+        <div class="kid-pill"><span>🐼</span><input id="kid1Name" class="input" value="小宝" style="width:120px"></div>
+        <div class="kid-pill"><span>🦊</span><input id="kid2Name" class="input" value="大宝" style="width:120px"></div>
+        <button class="ghost" id="saveKids">保存昵称</button>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <label class="hint">小宝级别：
+          <select id="levelKid1" class="input" style="width:140px">
+            <option value="red">红色封面</option>
+            <option value="yellow">黄色封面</option>
+          </select>
+        </label>
+        <label class="hint">大宝级别：
+          <select id="levelKid2" class="input" style="width:140px">
+            <option value="red">红色封面</option>
+            <option value="yellow">黄色封面</option>
+          </select>
+        </label>
+        <label class="hint">小宝曲线：
+          <select id="curveKid1" class="input" style="width:160px">
+            <option value="medium_fast">Medium Fast</option>
+            <option value="fast">Fast</option>
+            <option value="slow">Slow</option>
+            <option value="medium_slow">Medium Slow</option>
+          </select>
+        </label>
+        <label class="hint">大宝曲线：
+          <select id="curveKid2" class="input" style="width:160px">
+            <option value="medium_fast">Medium Fast</option>
+            <option value="fast">Fast</option>
+            <option value="slow">Slow</option>
+            <option value="medium_slow">Medium Slow</option>
+          </select>
+        </label>
+        <label class="hint">升级速度：
+          <input id="xpRate" type="number" min="0.05" max="1" step="0.05" value="0.2" class="input" style="width:120px">
+        </label>
+        <button class="ghost" id="saveLevels">保存等级设置</button>
+      </div>
+      <div class="sep"></div>
+      <h3>记录管理</h3>
+      <div class="row" style="margin-bottom:6px">
+        <button class="ghost danger" id="clearDayEntries">删除当天全部记录</button>
+        <button class="ghost danger" id="resetAllEntries" style="margin-left:8px">重置所有记录</button>
+        <button class="ghost danger" id="factoryReset" style="margin-left:8px">恢复出厂设置</button>
+      </div>
+      <div id="entriesList" class="col"></div>
+    </section>
+
+    <!-- 右侧：竞赛看板与成就 -->
+    <section class="card">
+      <h3>你追我赶 · 竞赛看板</h3>
+      <div id="scoreboard" class="col"></div>
+      <div class="sep"></div>
+      <h3>成就系统</h3>
+      <div id="badgesArea" class="col"></div>
+    </section>
+  </main>
+
+  <script>
+    // 彩带庆祝（移动到脚本内，修复底部乱码）
+    function celebrate() {
+      const layer = document.createElement('div'); layer.className = 'confetti'; document.body.appendChild(layer);
+      const colors = ['#FCC700','#FF0000','#30A7D7','#7dd3fc','#9bdcf8','#ff6b6b'];
+      for (let i=0;i<60;i++) {
+        const piece = document.createElement('div'); piece.className='confetti-piece';
+        piece.style.left = Math.random()*100+'%';
+        piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+        piece.style.animationDelay = (Math.random()*0.8)+'s';
+        layer.appendChild(piece);
+      }
+      setTimeout(()=>{ document.body.removeChild(layer); }, 2200);
+    }
+
+    // 数据结构
+    let KIDS = {
+      kid1: { name: '小宝', icon: '🐼' },
+      kid2: { name: '大宝', icon: '🦊' }
+    };
+    // readings[kidId] = [{ date:'YYYY-MM-DD', items:[{title, times}], createdAt }]
+    let readings = {};
+    let achievements = {}; // achievements[kidId] = { id: timestamp }
+    let GOALS = { minBooks: 3, minTimesPerBook: 2 };
+    let lastEarned = { kidId: null, achKey: null };
+    // 红火箭绘本等级加权：按封面等级系数，不使用字数
+    const ROCKET_LEVEL_COEF = { red: 1.0, yellow: 1.3 };
+    let KID_LEVELS = { kid1: 'red', kid2: 'yellow' }; // 默认：小宝=红色封面，大宝=黄色封面
+    let KID_WEIGHTS = { kid1: ROCKET_LEVEL_COEF[KID_LEVELS.kid1], kid2: ROCKET_LEVEL_COEF[KID_LEVELS.kid2] };
+    let KID_XP = { kid1: { totalExp: 0, curve: 'medium_fast' }, kid2: { totalExp: 0, curve: 'medium_fast' } };
+    const EXP_PER_EQ = 2000;
+    let XP_RATE = 0.2;
+
+    const ACHIEVEMENTS = {
+      firstLog: { name: '第一次打卡', icon: '🌟', desc: '完成首次阅读记录' },
+      dayStreak3: { name: '连续3天', icon: '🔥', desc: '连续打卡3天' },
+      dayStreak7: { name: '连续7天', icon: '🎯', desc: '连续打卡7天' },
+      totalBooks10: { name: '10本小达人', icon: '📚', desc: '累计记录10本绘本' },
+      totalBooks25: { name: '25本先锋', icon: '🚀', desc: '累计记录25本绘本' },
+      totalBooks50: { name: '50本高手', icon: '🏆', desc: '累计记录50本绘本' },
+      totalReads100: { name: '100次励志', icon: '💪', desc: '累计阅读次数达到100' },
+      singleBook10: { name: '单书10次', icon: '🔁', desc: '某一本书累计阅读10次' },
+      singleDay5Books: { name: '单日5本', icon: '⚡', desc: '一天内记录5本绘本' },
+      // 新增：朗读者等级与挑战
+      bronzeReader: { name: '铜牌朗读者', icon: '🥉', desc: '加权等效本数达到10' },
+      silverReader: { name: '银牌朗读者', icon: '🥈', desc: '加权等效本数达到25' },
+      goldReader: { name: '金牌朗读者', icon: '🥇', desc: '加权等效本数达到50' },
+      dailyEq3: { name: '每日挑战达成', icon: '📅', desc: '当日加权等效≥3本' },
+      weeklyEq10: { name: '周挑战达成', icon: '🗓️', desc: '本周加权等效≥10本' },
+      // 新增：角色成长成就
+      levelUp2: { name: '阅读新星', icon: '⭐', desc: '角色等级提升到Lv.2' },
+      levelUp3: { name: '阅读高手', icon: '🏆', desc: '角色等级提升到Lv.3' },
+      levelUp4: { name: '阅读大师', icon: '👑', desc: '角色等级提升到Lv.4' },
+      characterGrowth: { name: '角色成长', icon: '🌱', desc: '角色获得经验值提升' },
+      levelUp10: { name: '阅读勇者', icon: '⚔️', desc: '角色等级提升到Lv.10' },
+      levelUp50: { name: '阅读王者', icon: '👑', desc: '角色等级提升到Lv.50' },
+      levelUp100: { name: '阅读殿堂', icon: '🎓', desc: '角色等级提升到Lv.100' },
+    };
+
+    // 工具函数
+    const el = sel => document.querySelector(sel);
+    function todayStr() { 
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    // Safari 私密模式 / file:// 场景下 localStorage 写入可能抛出异常（QuotaExceededError）
+    function canUseStorage() {
+      try {
+        localStorage.setItem('__kr_test__', '1');
+        localStorage.removeItem('__kr_test__');
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function saveAll() {
+      try {
+        if (canUseStorage()) {
+          localStorage.setItem('kids_reading_v1', JSON.stringify({ KIDS, readings, achievements, kidLevels: KID_LEVELS, kidWeights: KID_WEIGHTS, xp: KID_XP, xpRate: XP_RATE }));
+          localStorage.setItem('kids_reading_theme', document.body.dataset.theme || 'unicorn');
+          localStorage.setItem('kids_reading_goals', JSON.stringify(GOALS));
+        } else {
+          // 在无法使用存储的情况下，仍然更新界面并提示用户
+          pushWarn('提示：Safari私密模式或权限限制导致本地存储不可用，数据仅在当前会话生效');
+        }
+      } catch (e) {
+        // 捕获写入异常，避免中断后续UI更新
+        console.warn('保存失败，可能是Safari私密模式或存储受限：', e);
+        pushWarn('保存失败：浏览器本地存储不可用（Safari私密模式或受限）');
+      }
+    }
+    function loadAll() {
+      try {
+        const raw = JSON.parse(localStorage.getItem('kids_reading_v1')||'{}');
+        if (raw.KIDS) KIDS = raw.KIDS;
+        if (raw.readings) readings = raw.readings;
+        if (raw.achievements) achievements = raw.achievements;
+        if (raw.kidLevels && typeof raw.kidLevels === 'object') KID_LEVELS = raw.kidLevels;
+        if (raw.kidWeights && typeof raw.kidWeights === 'object') KID_WEIGHTS = raw.kidWeights;
+        if (raw.xp && typeof raw.xp === 'object') KID_XP = raw.xp;
+        if (typeof raw.xpRate === 'number') XP_RATE = Math.max(0.05, Math.min(1, raw.xpRate));
+      } catch {}
+      try { const t = localStorage.getItem('kids_reading_theme'); if (t) setTheme(t); } catch {}
+      try { const g = JSON.parse(localStorage.getItem('kids_reading_goals')||'{}'); if (g && g.minBooks) GOALS = g; } catch {}
+    }
+    function pushNotif(text) {
+      try {
+        const box = el('#notif');
+        if (!box) {
+          console.warn('通知容器未找到:', text);
+          return;
+        }
+        const item = document.createElement('div');
+        item.className = 'notif-item';
+        item.textContent = text;
+        box.appendChild(item);
+        
+        // Safari兼容性：使用requestAnimationFrame确保DOM更新
+        requestAnimationFrame(() => {
+          setTimeout(()=>{ 
+            item.style.opacity = '0'; 
+            item.style.transition = 'opacity .4s'; 
+            setTimeout(()=> {
+              if (item.parentNode) {
+                box.removeChild(item);
+              }
+            }, 400); 
+          }, 2500);
+        });
+      } catch (error) {
+        console.error('显示通知失败:', error);
+      }
+    }
+    function pushWarn(text) {
+      try {
+        const box = el('#notif');
+        if (!box) {
+          console.warn('警告容器未找到:', text);
+          return;
+        }
+        const item = document.createElement('div');
+        item.className = 'notif-item warn';
+        item.textContent = text;
+        box.appendChild(item);
+        
+        // Safari兼容性：使用requestAnimationFrame确保DOM更新
+        requestAnimationFrame(() => {
+          setTimeout(()=>{ 
+            item.style.opacity = '0'; 
+            item.style.transition = 'opacity .4s'; 
+            setTimeout(()=> {
+              if (item.parentNode) {
+                box.removeChild(item);
+              }
+            }, 400); 
+          }, 3000);
+        });
+      } catch (error) {
+        console.error('显示警告失败:', error);
+      }
+    }
+
+    function expForLevel(L, curve) {
+      const l = Math.max(1, Math.min(100, Math.floor(L)));
+      if (curve === 'fast') return Math.floor(4 * l * l * l / 5);
+      if (curve === 'slow') return Math.floor(5 * l * l * l / 4);
+      if (curve === 'medium_slow') return Math.max(0, Math.floor(1.2 * l * l * l - 15 * l * l + 100 * l - 140));
+      return Math.floor(l * l * l);
+    }
+    function levelFromExp(totalExp, curve) {
+      let lvl = 1;
+      for (let L = 2; L <= 100; L++) {
+        if (totalExp >= expForLevel(L, curve)) lvl = L; else break;
+      }
+      return lvl;
+    }
+    function addExp(kidId, exp) {
+      const c = (KID_XP[kidId] && KID_XP[kidId].curve) || 'medium_fast';
+      const maxExp = expForLevel(100, c);
+      const t = (KID_XP[kidId] && KID_XP[kidId].totalExp) || 0;
+      const next = Math.max(0, Math.floor(exp));
+      KID_XP[kidId] = { totalExp: Math.min(maxExp, t + next), curve: c };
+      saveAll();
+    }
+    function getExpProgress(kidId) {
+      const c = (KID_XP[kidId] && KID_XP[kidId].curve) || 'medium_fast';
+      const t = (KID_XP[kidId] && KID_XP[kidId].totalExp) || 0;
+      const lvl = levelFromExp(t, c);
+      const base = expForLevel(lvl, c);
+      const nextLvl = Math.min(100, lvl + 1);
+      const next = expForLevel(nextLvl, c);
+      const need = Math.max(1, next - base);
+      const curr = Math.max(0, t - base);
+      const pct = Math.round(curr / need * 100);
+      return { level: lvl, currExp: curr, needExp: need, progress: Math.max(0, Math.min(100, pct)), curve: c };
+    }
+
+    // 录入行管理
+    function addBookRow(title='', times=1) {
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.innerHTML = `
+        <input class="input" placeholder="绘本名称" value="${title}">
+        <input class="input" type="number" min="1" max="20" value="${times}" style="width:100px" placeholder="次数">
+        <button class="ghost">删除</button>
+      `;
+      const delBtn = row.querySelector('button');
+      delBtn.onclick = ()=> row.remove();
+      el('#booksContainer').appendChild(row);
+    }
+
+    // 数据统计
+    function getKidEntries(kidId) { return readings[kidId] || []; }
+    function totalBooks(kidId) {
+      const entries = getKidEntries(kidId);
+      let count = 0;
+      for (const e of entries) count += (e.quickCount || 0) + e.items.length;
+      return count;
+    }
+    function totalReads(kidId) {
+      const entries = getKidEntries(kidId);
+      let t = 0;
+      for (const e of entries) for (const it of e.items) t += Number(it.times||0);
+      return t;
+    }
+    // 累计时长（分钟）
+    function totalMinutes(kidId) {
+      const entries = getKidEntries(kidId);
+      let t = 0;
+      for (const e of entries) for (const it of e.items) t += Number(it.minutes||0);
+      return t;
+    }
+    function getLevelInfo(kidId) {
+      const p = getExpProgress(kidId);
+      const lvl = p.level;
+      let title = '阅读新手', icon = '🌱', color = '#90EE90';
+      if (lvl >= 50 && lvl < 100) { title = '阅读大师'; icon = '👑'; color = '#FFD700'; }
+      else if (lvl >= 25) { title = '阅读高手'; icon = '🏆'; color = '#C0C0C0'; }
+      else if (lvl >= 10) { title = '阅读小达人'; icon = '⭐'; color = '#CD7F32'; }
+      if (lvl === 100) { title = '阅读殿堂'; icon = '🎓'; color = '#FFC107'; }
+      return { level: lvl, title, icon, color, exp: p.currExp, maxExp: p.needExp, progress: p.progress, curve: p.curve };
+    }
+    // 计算单本书的加权等效本数（用于详细模式）
+    function eqBooksForItem(kidId, item) {
+      // 基础权重来自孩子的等级设置
+      const baseWeight = KID_WEIGHTS[kidId] || 1.0;
+      // 每本书计为1本，乘以等级系数
+      return 1.0 * baseWeight;
+    }
+    
+    function totalWeightedBooks(kidId) {
+      const entries = getKidEntries(kidId);
+      let eq = 0;
+      for (const e of entries) {
+        // 快速模式：quickCount × 权重
+        if (e.quickCount) eq += e.quickCount * (KID_WEIGHTS[kidId] || 1.0);
+        // 详细模式：逐本加权
+        for (const it of e.items) eq += eqBooksForItem(kidId, it);
+      }
+      return Math.round(eq * 100) / 100;
+    }
+    function streakDays(kidId) {
+      const entries = getKidEntries(kidId).slice().sort((a,b)=>a.date.localeCompare(b.date));
+      if (!entries.length) return 0;
+      // 计算从最近一天向前连续打卡天数
+      const dates = Array.from(new Set(entries.map(e=>e.date))).sort();
+      let streak = 1;
+      for (let i = dates.length-1; i>0; i--) {
+        const d1 = new Date(dates[i]); const d0 = new Date(dates[i-1]);
+        const diff = Math.round((d1-d0)/86400000);
+        if (diff === 1) streak++; else break;
+      }
+      return streak;
+    }
+    function perBookTotals(kidId) {
+      const map = {};
+      for (const e of getKidEntries(kidId)) for (const it of e.items) {
+        const key = (it.title||'').trim();
+        if (!key) continue;
+        map[key] = (map[key]||0) + Number(it.times||0);
+      }
+      return map; // {title: totalTimes}
+    }
+    // 当日聚合本数（quickCount + items.length）
+    function dayBooks(kidId, date) {
+      const entries = (readings[kidId]||[]).filter(e=>e.date===date);
+      let total = 0;
+      for (const e of entries) {
+        total += (e.quickCount || 0) + e.items.length;
+      }
+      return total;
+    }
+
+    // 成就判定
+    function ensureKidAch(kidId) { achievements[kidId] = achievements[kidId] || {}; }
+    function grant(kidId, achKey) {
+      ensureKidAch(kidId);
+      if (!achievements[kidId][achKey]) {
+        achievements[kidId][achKey] = Date.now();
+        lastEarned = { kidId, achKey };
+        pushNotif(`${KIDS[kidId].icon} ${KIDS[kidId].name} 获得成就：${ACHIEVEMENTS[achKey].name}`);
+        celebrate();
+        saveAll(); renderBadges();
+      }
+    }
+    function revalidateAchievements(kidId) {
+      const tb = totalBooks(kidId);
+      const tr = totalReads(kidId);
+      const st = streakDays(kidId);
+      const teq = totalWeightedBooks(kidId);
+      const lvl = getExpProgress(kidId).level;
+      const per = perBookTotals(kidId);
+      if (getKidEntries(kidId).length>0) grant(kidId,'firstLog');
+      if (st>=3) grant(kidId,'dayStreak3');
+      if (st>=7) grant(kidId,'dayStreak7');
+      if (tb>=10) grant(kidId,'totalBooks10');
+      if (tb>=25) grant(kidId,'totalBooks25');
+      if (tb>=50) grant(kidId,'totalBooks50');
+      if (tr>=100) grant(kidId,'totalReads100');
+      for (const k in per) if (per[k]>=10) grant(kidId,'singleBook10');
+      // 单日5本：看最近一天
+      const today = todayStr();
+      if (dayBooks(kidId, today)>=5) grant(kidId,'singleDay5Books');
+      // 等级成就（加权等效）
+      if (teq>=10) grant(kidId,'bronzeReader');
+      if (teq>=25) grant(kidId,'silverReader');
+      if (teq>=50) grant(kidId,'goldReader');
+      // 每日/每周挑战（加权等效）
+      // 当日聚合：quickCount × 权重 + 详细本数 × 权重
+      const todayEq = getKidEntries(kidId).filter(e=>e.date===today).reduce((s,e)=> {
+        let eq = 0;
+        if (e.quickCount) eq += e.quickCount * (KID_WEIGHTS[kidId]||1.0);
+        eq += e.items.reduce((ss,it)=> ss + eqBooksForItem(kidId,it),0);
+        return s + eq;
+      },0);
+      const startOfWeek = (d=>{ const t=new Date(d); const day=t.getDay()||7; t.setDate(t.getDate()-day+1); return t.toISOString().slice(0,10); })(today);
+      const weekEq = getKidEntries(kidId).filter(e=> e.date>=startOfWeek).reduce((s,e)=> {
+        let eq = 0;
+        if (e.quickCount) eq += e.quickCount * (KID_WEIGHTS[kidId]||1.0);
+        eq += e.items.reduce((ss,it)=> ss + eqBooksForItem(kidId,it),0);
+        return s + eq;
+      },0);
+      if (todayEq>=3) grant(kidId,'dailyEq3');
+      if (weekEq>=10) grant(kidId,'weeklyEq10');
+      if (lvl >= 2) grant(kidId,'levelUp2');
+      if (lvl >= 3) grant(kidId,'levelUp3');
+      if (lvl >= 4) grant(kidId,'levelUp4');
+      if (lvl >= 10) grant(kidId,'levelUp10');
+      if (lvl >= 50) grant(kidId,'levelUp50');
+      if (lvl >= 100) grant(kidId,'levelUp100');
+      // 经验值增长成就（每次验证都检查）
+      if (teq > 0) grant(kidId,'characterGrowth');
+    }
+
+    // 渲染看板
+    function renderScoreboard() {
+      const b = el('#scoreboard');
+      b.innerHTML = '';
+      ['kid1','kid2'].forEach((kidId, idx) => {
+        const name = KIDS[kidId].name; const icon = KIDS[kidId].icon;
+        const tb = totalBooks(kidId); const tr = totalReads(kidId); const st = streakDays(kidId);
+        const teq = totalWeightedBooks(kidId); const mins = totalMinutes(kidId);
+        const otherId = idx===0 ? 'kid2' : 'kid1';
+        const otherEq = totalWeightedBooks(otherId);
+        const maxEq = Math.max(teq, otherEq, 1);
+        const percent = Math.round(teq / maxEq * 100);
+        const barClass = idx===0 ? '' : 'bar2';
+        const levelInfo = getLevelInfo(kidId);
+        const wrap = document.createElement('div');
+        wrap.className = 'col';
+        wrap.innerHTML = `
+          <!-- 角色卡片 -->
+          <div class="character-card" style="background: linear-gradient(135deg, ${levelInfo.color}20, #ffffff); border: 3px solid ${levelInfo.color}; border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.1)">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px">
+              <div class="avatar" style="width: 64px; height: 64px; background: ${levelInfo.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,.2)">${icon}</div>
+              <div style="flex: 1">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px">
+                  <h4 style="margin: 0; color: var(--text)">${name}</h4>
+                  <span style="background: ${levelInfo.color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: bold">Lv.${levelInfo.level} ${levelInfo.title}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666">
+                  <span>🔥 ${st}天连续</span>
+                  <span>📚 ${tb}本总计</span>
+                  <span>⚡ ${teq}等效</span>
+                </div>
+              </div>
+            </div>
+            <!-- 经验值条 -->
+            <div style="margin-bottom: 8px">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px">
+                <span style="font-size: 12px; color: #666">经验值</span>
+                <span style="font-size: 12px; color: #666">${levelInfo.exp}/${levelInfo.maxExp} · ${levelInfo.curve.replace('_',' ')}</span>
+              </div>
+              <div class="exp-bar" style="height: 12px; background: #f0f0f0; border-radius: 6px; overflow: hidden; border: 2px solid ${levelInfo.color}">
+                <div style="height: 100%; width: ${levelInfo.progress}%; background: linear-gradient(90deg, ${levelInfo.color}, ${levelInfo.color}80); transition: width 0.3s ease"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 进度对比 -->
+          <div class="kid-pill"><span>${icon}</span><b>${name}</b><span class="pill">连续：${st}天</span><span class="pill">等级：${KID_LEVELS[kidId]==='yellow'?'黄色封面':'红色封面'}</span><span class="pill">系数：${(KID_WEIGHTS[kidId]||1).toFixed(2)}</span><span class="pill">成长：${levelInfo.curve}</span><span class="pill">倍率：x${XP_RATE}</span></div>
+          <div class="progress-wrap">
+            <div class="bar ${barClass}"><div style="width:${percent}%"></div></div>
+            <span class="pill">原始：${tb}本 / 等效：${teq}本（公式：次数 × 等级系数） / 次数：${tr} / 时长：${mins}分钟</span>
+          </div>
+          <div class="tiny">说明：黄色封面系数默认高于红色封面，可在“孩子设置”中调整。</div>
+        `;
+        b.appendChild(wrap);
+      });
+      // 领先提示
+      const eq1 = totalWeightedBooks('kid1'), eq2 = totalWeightedBooks('kid2');
+      const leadText = Math.abs(eq1-eq2)<0.01 ? '今天加权进度持平，加油！' : (eq1>eq2 ? `${KIDS.kid1.icon} ${KIDS.kid1.name} 加权进度领先！` : `${KIDS.kid2.icon} ${KIDS.kid2.name} 加权进度领先！`);
+      const hint = document.createElement('div'); hint.className = 'tiny'; hint.textContent = leadText; b.appendChild(hint);
+    }
+
+    function renderBadges() {
+      const area = el('#badgesArea'); area.innerHTML = '';
+      ['kid1','kid2'].forEach(kidId => {
+        const map = achievements[kidId]||{};
+        const box = document.createElement('div'); box.className='col';
+        const title = document.createElement('div'); title.className='kid-pill'; title.innerHTML = `<span>${KIDS[kidId].icon}</span><b>${KIDS[kidId].name}</b>`;
+        box.appendChild(title);
+        const list = document.createElement('div');
+        list.className = 'list';
+        const items = Object.keys(ACHIEVEMENTS).map(k=>{
+          const got = !!map[k]; const a = ACHIEVEMENTS[k];
+          const pop = (lastEarned.kidId===kidId && lastEarned.achKey===k) ? ' pop' : '';
+          return `<span class="badge${pop}" style="opacity:${got?1:.45}"><span class="icon">${a.icon}</span><span>${a.name}</span></span>`;
+        }).join('');
+        list.innerHTML = items || '<div class="tiny">尚未获得成就，继续加油～</div>';
+        box.appendChild(list);
+        area.appendChild(box);
+      });
+    }
+
+    // 记录管理：渲染与删除
+    function formatTime(ts){ const d=new Date(ts); const pad=n=>(''+n).padStart(2,'0'); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; }
+    function renderEntriesList(){
+      const list = el('#entriesList'); if (!list) return;
+      const kidId = el('#kidSelect').value; const date = el('#dateInput').value || todayStr();
+      const entries = (readings[kidId]||[]).filter(e=>e.date===date).sort((a,b)=>a.createdAt-b.createdAt);
+      list.innerHTML = '';
+      const clearBtn = el('#clearDayEntries'); if (clearBtn) clearBtn.disabled = entries.length===0;
+      if (!entries.length) { list.innerHTML = '<div class="tiny">该日暂无记录</div>'; return; }
+      for (const e of entries){
+        const totalTimes = e.items.reduce((s,it)=> s + Number(it.times||0), 0);
+        const booksCount = (e.quickCount || 0) + e.items.length;
+        const detail = e.items.map(it=> `${it.title} × ${it.times}`).join('，');
+        const row = document.createElement('div'); row.className='row';
+        row.innerHTML = `
+          <span class="pill">时间 ${formatTime(e.createdAt)}</span>
+          <span class="pill">绘本 ${booksCount} 本</span>
+          <span class="pill">阅读 ${totalTimes} 次</span>
+          <span class="tiny" style="flex:1; color:#5b6b7b">${detail || '（快速模式）'}</span>
+          <button class="ghost" data-act="edit">编辑</button>
+          <button class="ghost danger" data-act="del">删除</button>
+        `;
+        const edit = row.querySelector('[data-act="edit"]');
+        const del = row.querySelector('[data-act="del"]');
+        edit.onclick = ()=> openEditEntry(kidId, e);
+        del.onclick = ()=>{
+          if (!confirm('确认删除该条记录？')) return;
+          readings[kidId] = (readings[kidId]||[]).filter(x=> x.createdAt !== e.createdAt);
+          saveAll(); renderEntriesList(); renderScoreboard(); renderBadges(); updateGoalProgressUI();
+          pushWarn('已删除一条记录');
+        };
+        list.appendChild(row);
+      }
+    }
+
+    function openEditEntry(kidId, entry){
+      const overlay = document.createElement('div'); overlay.className='modal-overlay';
+      const modal = document.createElement('div'); modal.className='modal';
+      let contentHTML = '';
+      if (entry.items && entry.items.length) {
+        // 详细模式
+        const itemsHTML = entry.items.map((it,idx)=> `
+          <div class="row">
+            <span class="pill" style="min-width:120px">${it.title}</span>
+            <input class="input" type="number" min="1" max="20" value="${Number(it.times||0)||1}" style="width:100px">
+          </div>
+        `).join('');
+        contentHTML = `<div class="tiny" style="margin-bottom:6px">仅支持修改次数（1-20），不改书名</div><div>${itemsHTML}</div>`;
+      } else {
+        // 快速模式
+        contentHTML = `
+          <div class="row">
+            <span class="pill">快速模式本数</span>
+            <input class="input" type="number" min="0" max="99" value="${entry.quickCount || 0}" style="width:100px">
+          </div>
+          <div class="tiny" style="margin-bottom:6px">可改为 0（相当于删除），或输入新本数</div>
+        `;
+      }
+      modal.innerHTML = `
+        <h4>编辑记录：${new Date(entry.createdAt).toLocaleString()}</h4>
+        ${contentHTML}
+        <div class="buttons">
+          <button class="ghost">取消</button>
+          <button class="ok">保存修改</button>
+        </div>
+      `;
+      overlay.appendChild(modal); document.body.appendChild(overlay);
+      const [btnCancel, btnSave] = modal.querySelectorAll('button');
+      btnCancel.onclick = ()=> document.body.removeChild(overlay);
+      btnSave.onclick = ()=>{
+        const list = readings[kidId]||[];
+        const i = list.findIndex(x=> x.createdAt===entry.createdAt);
+        if (i>=0) {
+          if (entry.items && entry.items.length) {
+            // 详细模式：更新 items
+            const inputs = Array.from(modal.querySelectorAll('input'));
+            const newItems = entry.items.map((it,idx)=> ({ title: it.title, times: Math.max(1, Math.min(20, Number(inputs[idx].value)||1)) }));
+            list[i] = { ...list[i], items: newItems };
+          } else {
+            // 快速模式：更新 quickCount
+            const input = modal.querySelector('input');
+            const newCount = Math.max(0, Math.min(99, Number(input.value)||0));
+            if (newCount===0) {
+              // 0 本视为删除
+              list.splice(i,1);
+            } else {
+              list[i] = { ...list[i], quickCount: newCount };
+            }
+          }
+          readings[kidId] = list;
+          saveAll(); renderEntriesList(); renderScoreboard(); updateGoalProgressUI(); revalidateAchievements(kidId);
+          pushNotif('记录已更新');
+        }
+        document.body.removeChild(overlay);
+      };
+    }
+
+    // 极速打卡：快速保存
+    function saveQuickEntry(kidId, date, quickCount) {
+      if (quickCount<=0) { pushWarn('本数不能为0'); return; }
+      
+      // Safari兼容性：确保日期格式正确
+      let saveDate = date || todayStr();
+      if (!saveDate || saveDate === '') {
+        saveDate = todayStr();
+      }
+      
+      // 验证日期格式
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (!dateRegex.test(saveDate)) {
+        console.warn('日期格式无效，使用今日日期:', saveDate);
+        saveDate = todayStr();
+      }
+      
+      readings[kidId] = readings[kidId] || [];
+      readings[kidId].push({ 
+        date: saveDate, 
+        quickCount: quickCount, 
+        items: [], 
+        createdAt: Date.now() 
+      });
+      
+      const eqGain = quickCount * (KID_WEIGHTS[kidId] || 1.0);
+      addExp(kidId, Math.round(eqGain * EXP_PER_EQ * XP_RATE));
+      saveAll(); 
+      revalidateAchievements(kidId); 
+      renderScoreboard(); 
+      updateGoalProgressUI(); 
+      renderEntriesList();
+      
+      pushNotif(`${KIDS[kidId].icon} 已保存 ${quickCount} 本`);
+    }
+    // 极速打卡：更新今日计数显示
+    function refreshQuickCounts() {
+      const date = el('#dateInput').value || todayStr();
+      const k1 = dayBooks('kid1', date);
+      const k2 = dayBooks('kid2', date);
+      el('#quickKid1Count').textContent = `今日：${k1} 本`;
+      el('#quickKid2Count').textContent = `今日：${k2} 本`;
+    }
+    // 极速打卡：事件绑定 (Safari兼容性改进)
+    let quickKid1Today = 0, quickKid2Today = 0;
+    
+    // 使用addEventListener替代onclick以获得更好的Safari兼容性
+    function bindQuickEvents() {
+      const kid1Add = el('#quickKid1Add');
+      const kid1Sub = el('#quickKid1Sub');
+      const kid1Save = el('#quickKid1Save');
+      const kid2Add = el('#quickKid2Add');
+      const kid2Sub = el('#quickKid2Sub');
+      const kid2Save = el('#quickKid2Save');
+      
+      if (kid1Add) {
+        kid1Add.addEventListener('click', function() {
+          quickKid1Today = Math.min(99, quickKid1Today+1); 
+          el('#quickKid1Count').textContent = `今日：${quickKid1Today} 本`;
+        });
+        
+        // 添加触摸事件支持 (iOS Safari)
+        kid1Add.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          this.style.transform = 'scale(0.95)';
+        });
+        
+        kid1Add.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          this.style.transform = 'scale(1)';
+        });
+      }
+      
+      if (kid1Sub) {
+        kid1Sub.addEventListener('click', function() {
+          quickKid1Today = Math.max(0, quickKid1Today-1); 
+          el('#quickKid1Count').textContent = `今日：${quickKid1Today} 本`;
+        });
+      }
+      
+      if (kid1Save) {
+        kid1Save.addEventListener('click', function() {
+          console.log('小宝保存按钮被点击', { quickKid1Today });
+          if (quickKid1Today<=0) { 
+            pushWarn('请先加本数'); 
+            return; 
+          }
+          
+          try {
+            const dateValue = el('#dateInput').value || todayStr();
+            console.log('保存日期:', dateValue);
+            saveQuickEntry('kid1', dateValue, quickKid1Today);
+            quickKid1Today = 0; 
+            el('#quickKid1Count').textContent = '今日：0 本';
+            console.log('小宝保存成功');
+          } catch (error) {
+            console.error('小宝保存失败:', error);
+            pushWarn('保存失败：' + error.message);
+          }
+        });
+      }
+      
+      if (kid2Add) {
+        kid2Add.addEventListener('click', function() {
+          quickKid2Today = Math.min(99, quickKid2Today+1); 
+          el('#quickKid2Count').textContent = `今日：${quickKid2Today} 本`;
+        });
+      }
+      
+      if (kid2Sub) {
+        kid2Sub.addEventListener('click', function() {
+          quickKid2Today = Math.max(0, quickKid2Today-1); 
+          el('#quickKid2Count').textContent = `今日：${quickKid2Today} 本`;
+        });
+      }
+      
+      if (kid2Save) {
+        kid2Save.addEventListener('click', function() {
+          console.log('大宝保存按钮被点击', { quickKid2Today });
+          if (quickKid2Today<=0) { 
+            pushWarn('请先加本数'); 
+            return; 
+          }
+          
+          try {
+            const dateValue = el('#dateInput').value || todayStr();
+            console.log('保存日期:', dateValue);
+            saveQuickEntry('kid2', dateValue, quickKid2Today);
+            quickKid2Today = 0; 
+            el('#quickKid2Count').textContent = '今日：0 本';
+            console.log('大宝保存成功');
+          } catch (error) {
+            console.error('大宝保存失败:', error);
+            pushWarn('保存失败：' + error.message);
+          }
+        });
+      }
+    }
+    // 日期切换时刷新计数
+    el('#dateInput').onchange = ()=> { refreshQuickCounts(); updateGoalProgressUI(); renderEntriesList(); };
+    // 详细模式开关
+    el('#toggleDetailMode').onclick = ()=> {
+      const detail = el('#booksContainer');
+      const controls = el('#detailControls');
+      const hint = el('#detailHint');
+      const visible = detail.style.display !== 'none';
+      detail.style.display = visible ? 'none' : 'block';
+      controls.style.display = visible ? 'none' : 'flex';
+      hint.style.display = visible ? 'none' : 'block';
+      el('#toggleDetailMode').textContent = visible ? '详细模式' : '极速模式';
+    };
+
+    // 事件：保存条目（详细模式）
+    el('#addBookRow').onclick = ()=> addBookRow('', 1);
+    el('#clearRows').onclick = ()=> el('#booksContainer').innerHTML = '';
+    el('#saveEntries').onclick = ()=> {
+      const kidId = el('#kidSelect').value;
+      let date = el('#dateInput').value || todayStr();
+      // 修正为本地日期字符串
+      if (!/\d{4}-\d{2}-\d{2}/.test(date)) date = todayStr();
+      const rows = Array.from(el('#booksContainer').children);
+      if (!rows.length) { pushNotif('请先添加至少一本绘本'); return; }
+      const items = [];
+      for (const r of rows) {
+        const title = r.children[0].value.trim();
+        const times = Math.max(1, Math.min(20, Number(r.children[1].value)||1));
+        if (title) items.push({ title, times });
+      }
+      if (!items.length) { pushNotif('绘本名称不能为空'); return; }
+      // 每日目标校验（详细模式：本数+每本次数）
+      const booksOk = items.length >= GOALS.minBooks;
+      const timesOk = items.every(it => it.times >= GOALS.minTimesPerBook);
+      if (booksOk && timesOk) {
+        pushNotif('🎯 今日目标达成！');
+        grant(kidId, 'firstLog'); // 若首次未解锁则同时触发
+        // 记录一个专属目标成就
+        ACHIEVEMENTS.dailyGoal = ACHIEVEMENTS.dailyGoal || { name:'每日目标达人', icon:'✅', desc:'达成每日阅读目标' };
+        grant(kidId, 'dailyGoal');
+      } else {
+        pushWarn('目标未达成：至少 '+GOALS.minBooks+' 本、每本≥'+GOALS.minTimesPerBook+' 次');
+      }
+      readings[kidId] = readings[kidId] || [];
+      readings[kidId].push({ date, items, createdAt: Date.now() });
+      el('#booksContainer').innerHTML = '';
+      pushNotif(`${KIDS[kidId].icon} 已保存 ${items.length} 本`);
+      const eqGain = items.length * (KID_WEIGHTS[kidId] || 1.0);
+      addExp(kidId, Math.round(eqGain * EXP_PER_EQ * XP_RATE));
+      saveAll(); revalidateAchievements(kidId); renderScoreboard();
+      updateGoalProgressUI(); renderEntriesList();
+    };
+
+    // 孩子设置
+    el('#saveKids').onclick = ()=> {
+      KIDS.kid1.name = el('#kid1Name').value.trim() || '小宝';
+      KIDS.kid2.name = el('#kid2Name').value.trim() || '大宝';
+      saveAll(); renderScoreboard(); renderBadges(); pushNotif('昵称已保存');
+    };
+    // 保存红火箭等级设置（系数随等级变化）
+    el('#saveLevels').onclick = ()=> {
+      KID_LEVELS.kid1 = (el('#levelKid1').value||'red');
+      KID_LEVELS.kid2 = (el('#levelKid2').value||'yellow');
+      KID_WEIGHTS.kid1 = ROCKET_LEVEL_COEF[KID_LEVELS.kid1] || 1.0;
+      KID_WEIGHTS.kid2 = ROCKET_LEVEL_COEF[KID_LEVELS.kid2] || 1.0;
+      if (el('#curveKid1')) KID_XP.kid1.curve = el('#curveKid1').value || 'medium_fast';
+      if (el('#curveKid2')) KID_XP.kid2.curve = el('#curveKid2').value || 'medium_fast';
+      if (el('#xpRate')) XP_RATE = Math.max(0.05, Math.min(1, Number(el('#xpRate').value)||0.2));
+      saveAll(); renderScoreboard(); pushNotif('等级设置已保存');
+    };
+
+    // 目标设置与进度
+    function updateGoalProgressUI() {
+      const kidId = el('#kidSelect').value; const date = el('#dateInput').value || todayStr();
+      const entries = (readings[kidId]||[]).filter(e=>e.date===date);
+      if (!entries.length) { el('#goalProgressHint').textContent = '今日进度：尚未记录'; return; }
+      // 快速模式：只看本数；详细模式：本数+每本次数
+      const hasDetail = entries.some(e=>e.items && e.items.length);
+      const totalBooks = dayBooks(kidId, date);
+      const booksOk = totalBooks >= GOALS.minBooks;
+      if (!hasDetail) {
+        // 仅快速模式
+        el('#goalProgressHint').textContent = `今日进度：记录${totalBooks}本（目标≥${GOALS.minBooks}） — ${booksOk ? '达成 ✅' : '未达成 ❌'}`;
+      } else {
+        // 详细模式：以最后一条为准（兼容旧逻辑）
+        const items = entries[entries.length-1].items;
+        const timesOk = items.every(it => it.times >= GOALS.minTimesPerBook);
+        el('#goalProgressHint').textContent = `今日进度：记录${items.length}本（至少${GOALS.minBooks}），每本≥${GOALS.minTimesPerBook}次 — ${booksOk && timesOk ? '达成 ✅' : '未达成 ❌'}`;
+      }
+    }
+    el('#saveGoals').onclick = ()=> {
+      GOALS.minBooks = Math.max(1, Math.min(20, Number(el('#goalBooks').value)||3));
+      GOALS.minTimesPerBook = Math.max(1, Math.min(20, Number(el('#goalTimes').value)||2));
+      saveAll(); pushNotif('每日目标已保存'); updateGoalProgressUI(); renderEntriesList();
+    };
+    el('#kidSelect').onchange = ()=> { updateGoalProgressUI(); renderEntriesList(); };
+    el('#dateInput').onchange = ()=> { updateGoalProgressUI(); renderEntriesList(); };
+
+    // 主题切换
+    function setTheme(key) {
+      document.body.classList.remove('theme-unicorn','theme-dinosaur','theme-spacebear','theme-pikachu');
+      document.body.classList.add('theme-'+key);
+      document.body.dataset.theme = key;
+      const mascot = { unicorn:'🦄', dinosaur:'🦖', spacebear:'🧸', pikachu:'⚡' }[key] || '🦄';
+      document.querySelector('.brand .mascot').textContent = mascot;
+      localStorage.setItem('kids_reading_theme', key);
+    }
+    el('#themeSelect').onchange = (e)=> setTheme(e.target.value);
+
+    // 导入导出
+    el('#exportData').onclick = ()=> {
+      const blob = new Blob([JSON.stringify({ KIDS, readings, achievements, kidLevels: KID_LEVELS, kidWeights: KID_WEIGHTS, goals: GOALS, xp: KID_XP, xpRate: XP_RATE }, null, 2)], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob); const a = document.createElement('a');
+      a.href = url; a.download = '绘本阅读数据.json'; a.click(); URL.revokeObjectURL(url);
+    };
+    el('#importData').onchange = ()=> {
+      const f = el('#importData').files[0]; if (!f) return;
+      const reader = new FileReader(); reader.onload = ()=>{
+        try {
+          const d = JSON.parse(reader.result||'{}');
+          if (d.KIDS) KIDS = d.KIDS;
+          if (d.readings) readings = d.readings;
+          if (d.achievements) achievements = d.achievements;
+          if (d.kidLevels && typeof d.kidLevels === 'object') KID_LEVELS = d.kidLevels;
+          if (d.kidWeights && typeof d.kidWeights === 'object') KID_WEIGHTS = d.kidWeights;
+          if (d.goals && d.goals.minBooks) GOALS = d.goals;
+          if (d.xp && typeof d.xp === 'object') KID_XP = d.xp;
+          if (typeof d.xpRate === 'number') XP_RATE = Math.max(0.05, Math.min(1, d.xpRate));
+          saveAll(); renderScoreboard(); renderBadges(); pushNotif('导入成功');
+        } catch(e){ pushWarn('导入失败：文件格式错误'); }
+      }; reader.readAsText(f, 'utf-8');
+    };
+
+    // 初始化
+    function init() {
+      loadAll();
+      el('#dateInput').value = todayStr();
+      // 默认隐藏详细模式
+      el('#booksContainer').style.display = 'none';
+      el('#detailControls').style.display = 'none';
+      el('#detailHint').style.display = 'none';
+      el('#toggleDetailMode').textContent = '详细模式';
+      
+      // 绑定快速打卡事件 (Safari兼容性)
+      bindQuickEvents();
+      
+      // 首次渲染与校验
+      ['kid1','kid2'].forEach(k=> revalidateAchievements(k));
+      renderScoreboard(); renderBadges();
+      // 初始化主题与目标UI
+      const t = localStorage.getItem('kids_reading_theme') || 'unicorn';
+      setTheme(t); el('#themeSelect').value = t;
+      el('#goalBooks').value = GOALS.minBooks; el('#goalTimes').value = GOALS.minTimesPerBook;
+      // 初始化等级选择为当前值
+      if (el('#levelKid1')) el('#levelKid1').value = KID_LEVELS.kid1;
+      if (el('#levelKid2')) el('#levelKid2').value = KID_LEVELS.kid2;
+      if (el('#curveKid1')) el('#curveKid1').value = (KID_XP.kid1 && KID_XP.kid1.curve) || 'medium_fast';
+      if (el('#curveKid2')) el('#curveKid2').value = (KID_XP.kid2 && KID_XP.kid2.curve) || 'medium_fast';
+      if (el('#xpRate')) el('#xpRate').value = XP_RATE;
+      // 初始化A/B主题与色盲模式
+      const v = localStorage.getItem('kids_ui_variant');
+      document.body.classList.add(v || (Math.random()<0.5?'variant-A':'variant-B'));
+      const cb = localStorage.getItem('kids_colorblind');
+      document.body.dataset.colorblind = cb==='true'?'true':'false';
+      ['kid1','kid2'].forEach(k=>{
+        if (!KID_XP[k] || typeof KID_XP[k].totalExp !== 'number') KID_XP[k] = { totalExp: 0, curve: 'medium_fast' };
+        if ((KID_XP[k].totalExp||0)===0 && (getKidEntries(k)||[]).length>0) {
+          const seed = Math.round(totalWeightedBooks(k) * EXP_PER_EQ * XP_RATE);
+          KID_XP[k].totalExp = Math.max(0, seed);
+        }
+      });
+      saveAll();
+      // 刷新今日计数
+      refreshQuickCounts();
+      updateGoalProgressUI();
+      renderEntriesList();
+    }
+    init();
+
+    // 删除当天全部记录：按钮点击逻辑
+    {
+      const clearBtn = el('#clearDayEntries');
+      if (clearBtn) {
+        clearBtn.onclick = ()=>{
+          const kidId = el('#kidSelect').value;
+          const date = el('#dateInput').value || todayStr();
+          const has = (readings[kidId]||[]).some(e=> e.date===date);
+          if (!has) { pushWarn('该日无记录可删除'); return; }
+          if (!confirm('确认删除当天所有记录？此操作不可撤销')) return;
+          readings[kidId] = (readings[kidId]||[]).filter(e=> e.date!==date);
+          saveAll(); renderEntriesList(); renderScoreboard(); renderBadges(); updateGoalProgressUI();
+          pushWarn('已清空当天全部记录');
+        };
+      }
+
+      const resetBtn = el('#resetAllEntries');
+      if (resetBtn) {
+        resetBtn.onclick = ()=>{
+          if (!confirm('确认重置所有记录？此操作不可撤销')) return;
+          readings = {};
+          saveAll();
+          // 清空输入区并刷新所有模块
+          const bc = el('#booksContainer'); if (bc) bc.innerHTML = '';
+          renderEntriesList(); renderScoreboard(); renderBadges(); updateGoalProgressUI();
+          pushWarn('已重置所有记录');
+        };
+      }
+
+      const factoryBtn = el('#factoryReset');
+      if (factoryBtn) {
+        factoryBtn.onclick = ()=>{
+          if (!confirm('确认恢复出厂设置？')) return;
+          const onlyXp = confirm('选择“确定”仅清除经验与等级；选择“取消”执行完全恢复');
+          if (onlyXp) {
+            KID_XP = { kid1: { totalExp: 0, curve: 'medium_fast' }, kid2: { totalExp: 0, curve: 'medium_fast' } };
+            KID_LEVELS = { kid1: 'red', kid2: 'yellow' };
+            KID_WEIGHTS = { kid1: ROCKET_LEVEL_COEF[KID_LEVELS.kid1], kid2: ROCKET_LEVEL_COEF[KID_LEVELS.kid2] };
+            achievements = {};
+            lastEarned = { kidId: null, achKey: null };
+            readings = {};
+            saveAll();
+            renderScoreboard(); renderBadges(); updateGoalProgressUI(); renderEntriesList(); refreshQuickCounts();
+            pushWarn('已清空经验、等级、成就与统计数据');
+          } else {
+            readings = {};
+            achievements = {};
+            KIDS = { kid1: { name: '小宝', icon: '🐼' }, kid2: { name: '大宝', icon: '🦊' } };
+            GOALS = { minBooks: 3, minTimesPerBook: 2 };
+            KID_XP = { kid1: { totalExp: 0, curve: 'medium_fast' }, kid2: { totalExp: 0, curve: 'medium_fast' } };
+            KID_LEVELS = { kid1: 'red', kid2: 'yellow' };
+            KID_WEIGHTS = { kid1: ROCKET_LEVEL_COEF[KID_LEVELS.kid1], kid2: ROCKET_LEVEL_COEF[KID_LEVELS.kid2] };
+            try {
+              localStorage.removeItem('kids_reading_v1');
+              localStorage.removeItem('kids_reading_theme');
+              localStorage.removeItem('kids_reading_goals');
+            } catch {}
+            setTheme('unicorn');
+            el('#kid1Name').value = KIDS.kid1.name; el('#kid2Name').value = KIDS.kid2.name;
+            if (el('#levelKid1')) el('#levelKid1').value = KID_LEVELS.kid1;
+            if (el('#levelKid2')) el('#levelKid2').value = KID_LEVELS.kid2;
+            if (el('#curveKid1')) el('#curveKid1').value = KID_XP.kid1.curve;
+            if (el('#curveKid2')) el('#curveKid2').value = KID_XP.kid2.curve;
+            el('#goalBooks').value = GOALS.minBooks; el('#goalTimes').value = GOALS.minTimesPerBook;
+            el('#dateInput').value = todayStr();
+            const bc = el('#booksContainer'); if (bc) bc.innerHTML = '';
+            saveAll();
+            renderEntriesList(); renderScoreboard(); renderBadges(); updateGoalProgressUI(); refreshQuickCounts();
+            pushWarn('已恢复出厂设置');
+          }
+        };
+      }
+    }
+  </script>
+</body>
+</html>
