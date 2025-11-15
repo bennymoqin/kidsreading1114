@@ -55,6 +55,45 @@
     .tiny { font-size:12px; color:#7f8c8d }
     .kid-pill { display:flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; background:#e6f6fd; border:3px solid var(--accent); font-weight:600; font-size:13px; transition: all 0.2s ease; }
     .kid-pill:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    .avatar-circle { --avatar-size:64px; width: var(--avatar-size); height: var(--avatar-size); border-radius:50%; border:3px solid var(--accent); background: var(--panel); display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow: 0 6px 16px rgba(0,0,0,.12); transition: transform 0.2s ease; position:relative; }
+    .avatar-circle img { width:100%; height:100%; object-fit:cover; }
+    .avatar-circle .avatar-emoji { font-size: calc(var(--avatar-size) * 0.58); }
+    .avatar-circle:hover { transform: translateY(-2px); }
+    .avatar-row { display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+    .avatar-setting { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:18px; background: rgba(48,167,215,0.08); border:2px dashed rgba(48,167,215,0.35); }
+    .avatar-preview { display:flex; align-items:center; justify-content:center; min-width:72px; min-height:72px; }
+    .ghost.mini { min-height:0; padding:8px 12px; font-size:12px; }
+    .avatar-setting .col { gap:6px !important; }
+    .quick-btn { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:6px; }
+    .quick-btn__avatar { display:flex; align-items:center; justify-content:center; }
+    .quick-btn .avatar-circle { --avatar-size:40px; border-width:2px; box-shadow:none; background:rgba(255,255,255,0.95); }
+    .quick-btn__label { font-size:14px; font-weight:700; letter-spacing:0.5px; }
+    .avatar-mini { display:flex; align-items:center; gap:6px; }
+    .avatar-mini .avatar-circle { --avatar-size:36px; border-width:2px; box-shadow:none; }
+    .trainer-card { position:relative; display:flex; flex-direction:column; gap:12px; background: linear-gradient(135deg, rgba(48,167,215,0.14), rgba(252,199,0,0.18)), var(--panel); border:3px solid var(--accent); border-radius:24px; padding:16px; overflow:hidden; box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+    .trainer-card::after { content:'POKÉ-LEVEL'; position:absolute; top:10px; right:18px; font-size:12px; letter-spacing:3px; color:rgba(27,38,49,0.15); font-weight:700; }
+    .trainer-card__header { display:flex; align-items:center; gap:16px; }
+    .trainer-card__avatar .avatar-circle { --avatar-size:72px; border-width:4px; }
+    .trainer-card__info { flex:1; display:flex; flex-direction:column; gap:6px; }
+    .trainer-card__title { display:flex; align-items:baseline; gap:8px; }
+    .trainer-card__name { font-size:20px; font-weight:700; color: var(--text); }
+    .trainer-card__level { font-size:18px; font-weight:800; color: var(--accent); text-shadow:0 1px 0 #fff; }
+    .trainer-card__badge { display:inline-flex; align-items:center; gap:6px; background: rgba(48,167,215,0.16); border:2px solid rgba(48,167,215,0.3); border-radius:22px; padding:4px 12px; font-size:12px; font-weight:600; color: var(--accent); width: fit-content; }
+    .trainer-card__badge-icon { font-size:16px; }
+    .trainer-card__stage { background: var(--accent); color:#fff; border-radius:999px; padding:2px 8px; font-size:11px; font-weight:700; letter-spacing:0.5px; }
+    .trainer-card__meta { display:flex; flex-wrap:wrap; gap:8px; font-size:12px; color:#546e7a; }
+    .trainer-card__xp { display:flex; flex-direction:column; gap:6px; }
+    .trainer-card__xp-head, .trainer-card__xp-foot { display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#546e7a; }
+    .trainer-card__xp-foot { color:#455a64; font-weight:600; }
+    .xp-meter { position:relative; height:14px; border-radius:999px; background:linear-gradient(90deg, rgba(255,255,255,0.82), rgba(48,167,215,0.12)); border:2px solid var(--accent); overflow:hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,.12); }
+    .xp-meter::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(90deg, transparent 0, transparent calc(16.66% - 1px), rgba(255,255,255,0.4) calc(16.66% - 1px), rgba(255,255,255,0.4) calc(16.66%)); pointer-events:none; }
+    .xp-meter__fill { height:100%; background:linear-gradient(90deg, var(--trainer-color, var(--accent)), rgba(255,255,255,0.85)); box-shadow: inset 0 -1px 0 rgba(0,0,0,0.2); transition: width 0.4s ease; }
+    .xp-meter__spark { position:absolute; top:-4px; width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--trainer-color, var(--accent)); box-shadow:0 0 12px rgba(255,255,255,0.9); transform: translateX(-50%); transition:left 0.4s ease; }
+    .trainer-chips { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0; }
+    .trainer-chip { display:inline-flex; align-items:center; gap:4px; padding:6px 12px; border-radius:999px; background:rgba(48,167,215,0.12); border:1px solid rgba(48,167,215,0.25); font-size:12px; font-weight:600; color:#2c3e50; }
+    .versus-wrap { display:flex; flex-direction:column; gap:6px; }
+    .versus-bar { position:relative; height:12px; border-radius:999px; background:#e3f2fd; border:2px solid var(--accent); overflow:hidden; }
+    .versus-bar__fill { height:100%; background:linear-gradient(90deg, var(--trainer-color, var(--accent)), rgba(255,255,255,0.65)); transition: width 0.3s ease; }
     .progress-wrap { display:flex; gap:12px; align-items:center; }
     .bar { flex:1; height:20px; background:#eaf6ff; border-radius:12px; overflow:hidden; border:3px solid var(--accent); box-shadow: inset 0 2px 4px rgba(0,0,0,.1); }
     .bar > div { height:100%; background:linear-gradient(90deg,#30A7D7,#7dd3fc); transition: width 0.3s ease; }
@@ -135,13 +174,13 @@
       <div class="row" style="gap:12px;flex-wrap:wrap">
         <div class="col" style="gap:6px">
           <div class="row" style="gap:6px">
-            <button class="ok" id="quickKid1Add" style="width:64px;height:64px;border-radius:50%;font-size:20px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">🐼<br>+1</button>
+            <button class="ok quick-btn" id="quickKid1Add" style="width:64px;height:64px;border-radius:50%;font-size:14px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)"><span class="quick-btn__avatar" id="quickKid1AddAvatar"></span><span class="quick-btn__label">+1</span></button>
             <span id="quickKid1Count" class="pill" style="font-size:14px;font-weight:600">今日：0 本</span>
             <button class="ghost" id="quickKid1Sub" style="width:56px;height:56px;border-radius:50%;font-size:16px;font-weight:bold">—1</button>
             <button class="ok" id="quickKid1Save" style="width:64px;height:64px;border-radius:50%;font-size:16px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">✅<br>保存</button>
           </div>
           <div class="row" style="gap:6px">
-            <button class="ok" id="quickKid2Add" style="width:64px;height:64px;border-radius:50%;font-size:20px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">🦊<br>+1</button>
+            <button class="ok quick-btn" id="quickKid2Add" style="width:64px;height:64px;border-radius:50%;font-size:14px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)"><span class="quick-btn__avatar" id="quickKid2AddAvatar"></span><span class="quick-btn__label">+1</span></button>
             <span id="quickKid2Count" class="pill" style="font-size:14px;font-weight:600">今日：0 本</span>
             <button class="ghost" id="quickKid2Sub" style="width:56px;height:56px;border-radius:50%;font-size:16px;font-weight:bold">—1</button>
             <button class="ok" id="quickKid2Save" style="width:64px;height:64px;border-radius:50%;font-size:16px;font-weight:bold;box-shadow:0 6px 0 #d6ac00, 0 8px 16px rgba(252,199,0,.3)">✅<br>保存</button>
@@ -179,6 +218,24 @@
         <div class="kid-pill"><span>🐼</span><input id="kid1Name" class="input" value="小宝" style="width:120px"></div>
         <div class="kid-pill"><span>🦊</span><input id="kid2Name" class="input" value="大宝" style="width:120px"></div>
         <button class="ghost" id="saveKids">保存昵称</button>
+      </div>
+      <div class="avatar-row">
+        <div class="avatar-setting">
+          <div id="previewKid1" class="avatar-preview"></div>
+          <div class="col">
+            <label class="ghost mini">上传小宝头像<input id="avatarKid1" type="file" accept="image/*" style="display:none"></label>
+            <button class="ghost mini" id="resetAvatarKid1">恢复默认头像</button>
+            <span class="tiny">建议使用方形图片，最大512KB。</span>
+          </div>
+        </div>
+        <div class="avatar-setting">
+          <div id="previewKid2" class="avatar-preview"></div>
+          <div class="col">
+            <label class="ghost mini">上传大宝头像<input id="avatarKid2" type="file" accept="image/*" style="display:none"></label>
+            <button class="ghost mini" id="resetAvatarKid2">恢复默认头像</button>
+            <span class="tiny">可替换默认表情，打造专属形象。</span>
+          </div>
+        </div>
       </div>
       <div class="row" style="margin-top:6px">
         <label class="hint">小宝级别：
@@ -295,6 +352,90 @@
 
     // 工具函数
     const el = sel => document.querySelector(sel);
+    function ensureKidData() {
+      ['kid1','kid2'].forEach((kidId, idx) => {
+        if (!KIDS[kidId]) {
+          KIDS[kidId] = { name: idx===0 ? '小宝' : '大宝', icon: idx===0 ? '🐼' : '🦊' };
+        }
+        if (!KIDS[kidId].name) KIDS[kidId].name = idx===0 ? '小宝' : '大宝';
+        if (!KIDS[kidId].icon) KIDS[kidId].icon = idx===0 ? '🐼' : '🦊';
+      });
+    }
+    function getAvatarHTML(kidId, size=64) {
+      ensureKidData();
+      const kid = KIDS[kidId] || {};
+      const data = kid.avatarData;
+      const icon = kid.icon || (kidId==='kid1' ? '🐼' : '🦊');
+      if (data) {
+        return `<span class="avatar-circle" style="--avatar-size:${size}px"><img src="${data}" alt="孩子头像"></span>`;
+      }
+      return `<span class="avatar-circle" style="--avatar-size:${size}px"><span class="avatar-emoji">${icon}</span></span>`;
+    }
+    function updateQuickButtons() {
+      const map = { kid1: '#quickKid1AddAvatar', kid2: '#quickKid2AddAvatar' };
+      Object.entries(map).forEach(([kidId, sel]) => {
+        const holder = el(sel);
+        if (holder) holder.innerHTML = getAvatarHTML(kidId, 40);
+      });
+    }
+    function updateAvatarPreviews() {
+      ['kid1','kid2'].forEach((kidId, idx) => {
+        const preview = el(`#previewKid${idx+1}`);
+        if (preview) preview.innerHTML = getAvatarHTML(kidId, 72);
+      });
+      updateQuickButtons();
+    }
+    function bindAvatarUploads() {
+      const configs = [
+        { kidId: 'kid1', input: '#avatarKid1', reset: '#resetAvatarKid1' },
+        { kidId: 'kid2', input: '#avatarKid2', reset: '#resetAvatarKid2' }
+      ];
+      configs.forEach(cfg => {
+        const inputEl = el(cfg.input);
+        if (inputEl) {
+          inputEl.onchange = () => {
+            const file = inputEl.files && inputEl.files[0];
+            if (!file) return;
+            if (file.size > 512 * 1024) {
+              pushWarn('头像过大，请选择小于512KB的图片');
+              inputEl.value = '';
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+              ensureKidData();
+              KIDS[cfg.kidId].avatarData = reader.result;
+              saveAll();
+              updateAvatarPreviews();
+              renderScoreboard();
+              renderBadges();
+              pushNotif('头像已更新');
+              inputEl.value = '';
+            };
+            reader.onerror = () => {
+              pushWarn('头像读取失败，请重试');
+            };
+            reader.readAsDataURL(file);
+          };
+        }
+        const resetBtn = el(cfg.reset);
+        if (resetBtn) {
+          resetBtn.onclick = () => {
+            ensureKidData();
+            if (!KIDS[cfg.kidId].avatarData) {
+              pushWarn('当前已是默认头像');
+              return;
+            }
+            delete KIDS[cfg.kidId].avatarData;
+            saveAll();
+            updateAvatarPreviews();
+            renderScoreboard();
+            renderBadges();
+            pushNotif('已恢复默认头像');
+          };
+        }
+      });
+    }
     function todayStr() { 
       const d = new Date();
       const year = d.getFullYear();
@@ -341,6 +482,7 @@
       } catch {}
       try { const t = localStorage.getItem('kids_reading_theme'); if (t) setTheme(t); } catch {}
       try { const g = JSON.parse(localStorage.getItem('kids_reading_goals')||'{}'); if (g && g.minBooks) GOALS = g; } catch {}
+      ensureKidData();
     }
     function pushNotif(text) {
       try {
@@ -469,6 +611,11 @@
       for (const e of entries) for (const it of e.items) t += Number(it.minutes||0);
       return t;
     }
+    function getEvolutionStage(level) {
+      if (level >= 36) return { label: '最终进化', badge: 'Stage III', icon: '🐉' };
+      if (level >= 16) return { label: '第一次进化', badge: 'Stage II', icon: '⚔️' };
+      return { label: '初始形态', badge: 'Stage I', icon: '🥚' };
+    }
     function getLevelInfo(kidId) {
       const p = getExpProgress(kidId);
       const lvl = p.level;
@@ -477,7 +624,9 @@
       else if (lvl >= 25) { title = '阅读高手'; icon = '🏆'; color = '#C0C0C0'; }
       else if (lvl >= 10) { title = '阅读小达人'; icon = '⭐'; color = '#CD7F32'; }
       if (lvl === 100) { title = '阅读殿堂'; icon = '🎓'; color = '#FFC107'; }
-      return { level: lvl, title, icon, color, exp: p.currExp, maxExp: p.needExp, progress: p.progress, curve: p.curve };
+      const stage = getEvolutionStage(lvl);
+      const toNext = Math.max(0, p.needExp - p.currExp);
+      return { level: lvl, title, icon, color, exp: p.currExp, maxExp: p.needExp, progress: p.progress, curve: p.curve, toNext, stage };
     }
     // 计算单本书的加权等效本数（用于详细模式）
     function eqBooksForItem(kidId, item) {
@@ -596,68 +745,80 @@
       const b = el('#scoreboard');
       b.innerHTML = '';
       ['kid1','kid2'].forEach((kidId, idx) => {
-        const name = KIDS[kidId].name; const icon = KIDS[kidId].icon;
-        const tb = totalBooks(kidId); const tr = totalReads(kidId); const st = streakDays(kidId);
-        const teq = totalWeightedBooks(kidId); const mins = totalMinutes(kidId);
+        const name = KIDS[kidId].name;
+        const tb = totalBooks(kidId);
+        const tr = totalReads(kidId);
+        const st = streakDays(kidId);
+        const teq = totalWeightedBooks(kidId);
+        const mins = totalMinutes(kidId);
         const otherId = idx===0 ? 'kid2' : 'kid1';
         const otherEq = totalWeightedBooks(otherId);
         const maxEq = Math.max(teq, otherEq, 1);
-        const percent = Math.round(teq / maxEq * 100);
-        const barClass = idx===0 ? '' : 'bar2';
+        const percent = Math.max(0, Math.min(100, Math.round(teq / maxEq * 100)));
         const levelInfo = getLevelInfo(kidId);
+        const toNextText = Number(Math.round(levelInfo.toNext || 0)).toLocaleString();
         const wrap = document.createElement('div');
         wrap.className = 'col';
         wrap.innerHTML = `
-          <!-- 角色卡片 -->
-          <div class="character-card" style="background: linear-gradient(135deg, ${levelInfo.color}20, #ffffff); border: 3px solid ${levelInfo.color}; border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.1)">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px">
-              <div class="avatar" style="width: 64px; height: 64px; background: ${levelInfo.color}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 12px rgba(0,0,0,.2)">${icon}</div>
-              <div style="flex: 1">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px">
-                  <h4 style="margin: 0; color: var(--text)">${name}</h4>
-                  <span style="background: ${levelInfo.color}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: bold">Lv.${levelInfo.level} ${levelInfo.title}</span>
+          <div class="trainer-card" style="--trainer-color:${levelInfo.color}">
+            <div class="trainer-card__header">
+              <div class="trainer-card__avatar">${getAvatarHTML(kidId, 72)}</div>
+              <div class="trainer-card__info">
+                <div class="trainer-card__title">
+                  <span class="trainer-card__name">${name}</span>
+                  <span class="trainer-card__level">Lv.${levelInfo.level}</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #666">
-                  <span>🔥 ${st}天连续</span>
-                  <span>📚 ${tb}本总计</span>
-                  <span>⚡ ${teq}等效</span>
+                <div class="trainer-card__badge" title="${levelInfo.title}">
+                  <span class="trainer-card__badge-icon">${levelInfo.icon}</span>
+                  <span>${levelInfo.title}</span>
+                  <span class="trainer-card__stage">${levelInfo.stage.badge}</span>
+                </div>
+                <div class="trainer-card__meta">
+                  <span>🔥 连续 ${st} 天</span>
+                  <span>📚 累计 ${tb} 本</span>
+                  <span>⚡ 等效 ${teq}</span>
                 </div>
               </div>
             </div>
-            <!-- 经验值条 -->
-            <div style="margin-bottom: 8px">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px">
-                <span style="font-size: 12px; color: #666">经验值</span>
-                <span style="font-size: 12px; color: #666">${levelInfo.exp}/${levelInfo.maxExp} · ${levelInfo.curve.replace('_',' ')}</span>
+            <div class="trainer-card__xp">
+              <div class="trainer-card__xp-head">
+                <span>经验曲线 · ${levelInfo.curve.replace('_',' ').toUpperCase()}</span>
+                <span>${levelInfo.exp}/${levelInfo.maxExp} XP</span>
               </div>
-              <div class="exp-bar" style="height: 12px; background: #f0f0f0; border-radius: 6px; overflow: hidden; border: 2px solid ${levelInfo.color}">
-                <div style="height: 100%; width: ${levelInfo.progress}%; background: linear-gradient(90deg, ${levelInfo.color}, ${levelInfo.color}80); transition: width 0.3s ease"></div>
+              <div class="xp-meter">
+                <div class="xp-meter__fill" style="width:${levelInfo.progress}%"></div>
+                <div class="xp-meter__spark" style="left:${levelInfo.progress}%"></div>
+              </div>
+              <div class="trainer-card__xp-foot">
+                <span>${levelInfo.stage.icon} ${levelInfo.stage.label}</span>
+                <span>距升级：${toNextText} XP</span>
               </div>
             </div>
           </div>
-          
-          <!-- 进度对比 -->
-          <div class="kid-pill"><span>${icon}</span><b>${name}</b><span class="pill">连续：${st}天</span><span class="pill">等级：${KID_LEVELS[kidId]==='yellow'?'黄色封面':'红色封面'}</span><span class="pill">系数：${(KID_WEIGHTS[kidId]||1).toFixed(2)}</span><span class="pill">成长：${levelInfo.curve}</span><span class="pill">倍率：x${XP_RATE}</span></div>
-          <div class="progress-wrap">
-            <div class="bar ${barClass}"><div style="width:${percent}%"></div></div>
-            <span class="pill">原始：${tb}本 / 等效：${teq}本（公式：次数 × 等级系数） / 次数：${tr} / 时长：${mins}分钟</span>
+          <div class="trainer-chips">
+            <span class="trainer-chip">等级：${KID_LEVELS[kidId]==='yellow'?'黄色封面':'红色封面'}</span>
+            <span class="trainer-chip">系数：${(KID_WEIGHTS[kidId]||1).toFixed(2)}</span>
+            <span class="trainer-chip">成长：${levelInfo.curve}</span>
+            <span class="trainer-chip">倍率：x${XP_RATE}</span>
+            <span class="trainer-chip">累计阅读：${tr} 次 · ${mins} 分钟</span>
           </div>
-          <div class="tiny">说明：黄色封面系数默认高于红色封面，可在“孩子设置”中调整。</div>
+          <div class="versus-wrap">
+            <div class="versus-bar"><div class="versus-bar__fill" style="width:${percent}%"></div></div>
+            <span class="tiny">原始 ${tb} 本 · 等效 ${teq} 本（乘等级系数） · 对比对手 ${otherEq} 本</span>
+          </div>
         `;
         b.appendChild(wrap);
       });
-      // 领先提示
       const eq1 = totalWeightedBooks('kid1'), eq2 = totalWeightedBooks('kid2');
       const leadText = Math.abs(eq1-eq2)<0.01 ? '今天加权进度持平，加油！' : (eq1>eq2 ? `${KIDS.kid1.icon} ${KIDS.kid1.name} 加权进度领先！` : `${KIDS.kid2.icon} ${KIDS.kid2.name} 加权进度领先！`);
-      const hint = document.createElement('div'); hint.className = 'tiny'; hint.textContent = leadText; b.appendChild(hint);
+      const hint = document.createElement('div'); hint.className = 'tiny'; hint.textContent = `${leadText} · 宝可梦式经验条实时展示成长阶段`; b.appendChild(hint);
     }
-
     function renderBadges() {
       const area = el('#badgesArea'); area.innerHTML = '';
       ['kid1','kid2'].forEach(kidId => {
         const map = achievements[kidId]||{};
         const box = document.createElement('div'); box.className='col';
-        const title = document.createElement('div'); title.className='kid-pill'; title.innerHTML = `<span>${KIDS[kidId].icon}</span><b>${KIDS[kidId].name}</b>`;
+        const title = document.createElement('div'); title.className='kid-pill'; title.innerHTML = `<span class="avatar-mini">${getAvatarHTML(kidId, 36)}</span><b>${KIDS[kidId].name}</b>`;
         box.appendChild(title);
         const list = document.createElement('div');
         list.className = 'list';
@@ -964,7 +1125,7 @@
     el('#saveKids').onclick = ()=> {
       KIDS.kid1.name = el('#kid1Name').value.trim() || '小宝';
       KIDS.kid2.name = el('#kid2Name').value.trim() || '大宝';
-      saveAll(); renderScoreboard(); renderBadges(); pushNotif('昵称已保存');
+      saveAll(); renderScoreboard(); renderBadges(); updateAvatarPreviews(); pushNotif('昵称已保存');
     };
     // 保存红火箭等级设置（系数随等级变化）
     el('#saveLevels').onclick = ()=> {
@@ -1035,7 +1196,7 @@
           if (d.goals && d.goals.minBooks) GOALS = d.goals;
           if (d.xp && typeof d.xp === 'object') KID_XP = d.xp;
           if (typeof d.xpRate === 'number') XP_RATE = Math.max(0.05, Math.min(1, d.xpRate));
-          saveAll(); renderScoreboard(); renderBadges(); pushNotif('导入成功');
+          saveAll(); renderScoreboard(); renderBadges(); updateAvatarPreviews(); pushNotif('导入成功');
         } catch(e){ pushWarn('导入失败：文件格式错误'); }
       }; reader.readAsText(f, 'utf-8');
     };
@@ -1056,6 +1217,8 @@
       // 首次渲染与校验
       ['kid1','kid2'].forEach(k=> revalidateAchievements(k));
       renderScoreboard(); renderBadges();
+      updateAvatarPreviews();
+      bindAvatarUploads();
       // 初始化主题与目标UI
       const t = localStorage.getItem('kids_reading_theme') || 'unicorn';
       setTheme(t); el('#themeSelect').value = t;
@@ -1128,7 +1291,7 @@
             lastEarned = { kidId: null, achKey: null };
             readings = {};
             saveAll();
-            renderScoreboard(); renderBadges(); updateGoalProgressUI(); renderEntriesList(); refreshQuickCounts();
+            renderScoreboard(); renderBadges(); updateAvatarPreviews(); updateGoalProgressUI(); renderEntriesList(); refreshQuickCounts();
             pushWarn('已清空经验、等级、成就与统计数据');
           } else {
             readings = {};
@@ -1153,7 +1316,7 @@
             el('#dateInput').value = todayStr();
             const bc = el('#booksContainer'); if (bc) bc.innerHTML = '';
             saveAll();
-            renderEntriesList(); renderScoreboard(); renderBadges(); updateGoalProgressUI(); refreshQuickCounts();
+            renderEntriesList(); renderScoreboard(); renderBadges(); updateAvatarPreviews(); updateGoalProgressUI(); refreshQuickCounts();
             pushWarn('已恢复出厂设置');
           }
         };
